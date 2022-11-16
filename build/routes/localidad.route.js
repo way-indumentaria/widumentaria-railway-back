@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const localidad_controllers_1 = require("../controllers/localidad.controllers");
+const verificarToken_1 = require("../libs/verificarToken");
+let LocalidadController = new localidad_controllers_1.localidadController();
+const enrutadorLocalidad = express_1.Router();
+enrutadorLocalidad.route('/localidades').get(verificarToken_1.validarToken, LocalidadController.listaLocalidades);
+enrutadorLocalidad.route('/localidades').post(LocalidadController.guardarLocalidad);
+enrutadorLocalidad.route('/localidades/:codigo').delete(LocalidadController.eliminarLocalidad);
+enrutadorLocalidad.route('/localidades/:codigo').put(LocalidadController.actualizarLocalidad);
+enrutadorLocalidad.route('/localidades/:codigo').get(LocalidadController.obtenerUnaLocalidad);
+exports.default = enrutadorLocalidad;

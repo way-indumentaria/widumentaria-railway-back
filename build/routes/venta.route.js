@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const venta_controllers_1 = require("../controllers/venta.controllers");
+let VentaController = new venta_controllers_1.ventaController();
+const enrutadorVenta = express_1.Router();
+enrutadorVenta.route('/ventas').get(VentaController.listaVentas);
+enrutadorVenta.route('/ventas-por-vendedor/:id_vendedor').get(VentaController.listaVentasPorVendedor);
+enrutadorVenta.route('/ventas-lector').post(VentaController.guardarVentaPorLector);
+enrutadorVenta.route('/ventas/:codigo').delete(VentaController.eliminarVenta);
+enrutadorVenta.route('/ventas/:codigo').put(VentaController.actualizarVenta);
+enrutadorVenta.route('/ventas/:codigo').get(VentaController.obtenerUnaVenta);
+enrutadorVenta.route('/ventas-a-stock/:id').get(VentaController.enviarStock);
+exports.default = enrutadorVenta;
