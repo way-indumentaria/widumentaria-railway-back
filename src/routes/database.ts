@@ -1,6 +1,6 @@
 //Importamos el metodo "createPool" que nos permitira conectarnos a la base de datos desde "promise-mysql"
-import { createPool } from "promise-mysql";
-
+//import { createPool } from "promise-mysql";
+import {createPool} from 'mysql2/promise'
 import {
     DB_HOST,
     DB_NAME,
@@ -20,13 +20,21 @@ export async function conexion()
         database:'heroku_184c871a0f3b411'
     });*/
 
-    const connect = await createPool({
+    /*const connect = await createPool({
         host:DB_HOST,
         user:DB_USER,
         password:DB_NAME,
         port:DB_PORT,
         database:DB_PASSWORD
-    });
+    });*/
+
+    const connect = await createPool({
+        user: DB_USER,
+        password: DB_PASSWORD,
+        host: DB_HOST,
+        port: DB_PORT,
+        database: DB_NAME
+    })
 
     //Entrega una respuesta
     return connect;

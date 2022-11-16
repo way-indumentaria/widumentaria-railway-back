@@ -11,7 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.conexion = void 0;
 //Importamos el metodo "createPool" que nos permitira conectarnos a la base de datos desde "promise-mysql"
-const promise_mysql_1 = require("promise-mysql");
+//import { createPool } from "promise-mysql";
+const promise_1 = require("mysql2/promise");
 const config_1 = require("../config");
 //Funcion que se encargara de la conexion a las base de datos
 function conexion() {
@@ -23,12 +24,19 @@ function conexion() {
             password:'5ebb0c4b',
             database:'heroku_184c871a0f3b411'
         });*/
-        const connect = yield promise_mysql_1.createPool({
-            host: config_1.DB_HOST,
+        /*const connect = await createPool({
+            host:DB_HOST,
+            user:DB_USER,
+            password:DB_NAME,
+            port:DB_PORT,
+            database:DB_PASSWORD
+        });*/
+        const connect = yield promise_1.createPool({
             user: config_1.DB_USER,
-            password: config_1.DB_NAME,
+            password: config_1.DB_PASSWORD,
+            host: config_1.DB_HOST,
             port: config_1.DB_PORT,
-            database: config_1.DB_PASSWORD
+            database: config_1.DB_NAME
         });
         //Entrega una respuesta
         return connect;
