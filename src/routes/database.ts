@@ -33,14 +33,7 @@ export async function conexion()
         password: DB_PASSWORD,
         host: DB_HOST,
         port: DB_PORT,
-        database: DB_NAME,
-        multipleStatements:true,
-        typeCast: function(field,next){
-            if(field.type == 'VAR_STRING'){
-                return field.string()
-            }
-            return next()
-        }
+        database: DB_NAME
     })
 
     //Entrega una respuesta

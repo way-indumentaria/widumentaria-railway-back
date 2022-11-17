@@ -11,7 +11,7 @@ export class CatgastoController {
             const db = await conexion();
             let categoria_gasto = await db.query('select * from categoria_gasto');
 
-            res.json(categoria_gasto);     
+            res.json(categoria_gasto[0]);     
 
             await db.end();
         } catch (error) {

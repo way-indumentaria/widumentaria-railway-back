@@ -21,7 +21,7 @@ export class gastoController {
             let gastos = await db.query('select g.id_gasto,g.descripcion,g.importe,cg.descripcion as descripcion_categoria, cg.id_categoria_gasto as categoria from gasto g, categoria_gasto cg where g.categoria = cg.id_categoria_gasto');
 
             //Retorna una respuesta en formato json de pagos
-            res.json(gastos);
+            res.json(gastos[0]);
             await db.end();
         } catch (error) {
             return res.json(error);

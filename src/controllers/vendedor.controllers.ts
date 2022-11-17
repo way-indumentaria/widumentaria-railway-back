@@ -21,7 +21,7 @@ export class vendedorController{
 
             let vendedores = await db.query('select v.id_vendedor, v.nombre, v.apellido, v.dni, v.domicilio, v.email, l.descripcion as descripcion, l.id_localidad as id_localidad , v.adjunto, v.telefono, v.nom_garante, v.ape_garante, v.email_garante, v.dni_garante, v.domicilio_garante, v.telefono_garante, v.estado, v.imagen_perfil from vendedor v,localidad l where v.localidad = l.id_localidad order by v.nombre asc');
 
-            res.json(vendedores);
+            res.json(vendedores[0]);
             await db.end();
         } catch (error) {
             return res.json(error);

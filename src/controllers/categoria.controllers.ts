@@ -10,7 +10,7 @@ export class categoriaController {
 
             let categoria = await db.query('select * from categoria');
     
-            res.json(categoria);
+            res.json(categoria[0]);
             await db.end();
         } catch (error) {
             return res.json(error);

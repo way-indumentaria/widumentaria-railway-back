@@ -19,7 +19,7 @@ class CatgastoController {
             try {
                 const db = yield database_1.conexion();
                 let categoria_gasto = yield db.query('select * from categoria_gasto');
-                res.json(categoria_gasto);
+                res.json(categoria_gasto[0]);
                 yield db.end();
             }
             catch (error) {

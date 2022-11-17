@@ -17,7 +17,7 @@ class categoriaController {
             try {
                 const db = yield database_1.conexion();
                 let categoria = yield db.query('select * from categoria');
-                res.json(categoria);
+                res.json(categoria[0]);
                 yield db.end();
             }
             catch (error) {

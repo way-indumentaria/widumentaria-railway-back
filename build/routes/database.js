@@ -36,14 +36,7 @@ function conexion() {
             password: config_1.DB_PASSWORD,
             host: config_1.DB_HOST,
             port: config_1.DB_PORT,
-            database: config_1.DB_NAME,
-            multipleStatements: true,
-            typeCast: function (field, next) {
-                if (field.type == 'VAR_STRING') {
-                    return field.string();
-                }
-                return next();
-            }
+            database: config_1.DB_NAME
         });
         //Entrega una respuesta
         return connect;
