@@ -5,11 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const vendedor_controllers_1 = require("../controllers/vendedor.controllers");
-const verificarToken_1 = require("../libs/verificarToken");
 const multer_1 = __importDefault(require("../libs/multer"));
 let VendedorController = new vendedor_controllers_1.vendedorController();
 const enrutadorVendedor = express_1.Router();
-enrutadorVendedor.route('/vendedores').get(verificarToken_1.validarToken, VendedorController.listaVendedores);
+enrutadorVendedor.route('/vendedores').get(VendedorController.listaVendedores);
 enrutadorVendedor.route('/vendedores').post(multer_1.default.array('img-vendedor'), VendedorController.guardarVendedor);
 enrutadorVendedor.route('/vendedores').post(VendedorController.guardarVendedor);
 enrutadorVendedor.route('/vendedores/:codigo').delete(VendedorController.eliminarVendedor);

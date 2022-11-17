@@ -11,7 +11,7 @@ export class provinciaController{
 
             let provincias = await db.query('select * from provincia');
 
-            res.json(provincias[0]);
+            res.json(provincias);
             await db.end();
         } catch (error) {
             return res.json(error);

@@ -7,7 +7,7 @@ let ProductoController = new productoController();
 
 const enrutadorProducto = Router();
 
-enrutadorProducto.route('/producto').get(validarToken,ProductoController.listaProducto);
+enrutadorProducto.route('/producto').get(ProductoController.listaProducto);
 
 enrutadorProducto.route('/producto').post(ProductoController.guardarProducto);
 

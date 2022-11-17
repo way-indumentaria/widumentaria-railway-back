@@ -7,7 +7,7 @@ let VendedorController = new vendedorController();
 
 const enrutadorVendedor = Router();
 
-enrutadorVendedor.route('/vendedores').get(validarToken,VendedorController.listaVendedores);
+enrutadorVendedor.route('/vendedores').get(VendedorController.listaVendedores);
 enrutadorVendedor.route('/vendedores').post(multer.array('img-vendedor'),VendedorController.guardarVendedor);
 enrutadorVendedor.route('/vendedores').post(VendedorController.guardarVendedor);
 enrutadorVendedor.route('/vendedores/:codigo').delete(VendedorController.eliminarVendedor);

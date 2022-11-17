@@ -17,7 +17,7 @@ class localidadController {
             try {
                 const db = yield database_1.conexion();
                 let localidades = yield db.query('select l.id_localidad,l.descripcion, p.descripcion as descripcion_provincia, p.id_provincia as provincia from localidad l, provincia p where l.provincia = p.id_provincia');
-                res.json(localidades[0]);
+                res.json(localidades);
                 yield db.end();
             }
             catch (error) {

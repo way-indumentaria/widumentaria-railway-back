@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const categoria_controllers_1 = require("../controllers/categoria.controllers");
-const verificarToken_1 = require("../libs/verificarToken");
 let CategoriaController = new categoria_controllers_1.categoriaController();
 const enrutadorCategoria = express_1.Router();
-enrutadorCategoria.route('/categoria').get(verificarToken_1.validarToken, CategoriaController.listaCategoria);
+enrutadorCategoria.route('/categoria').get(CategoriaController.listaCategoria);
 enrutadorCategoria.route('/categoria').post(CategoriaController.guardarCategoria);
 enrutadorCategoria.route('/categoria/:codigo').delete(CategoriaController.eliminarCategoria);
 enrutadorCategoria.route('/categoria/:codigo').put(CategoriaController.actualizarCategoria);
