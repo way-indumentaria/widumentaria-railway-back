@@ -6,7 +6,7 @@ let ProvinciaController = new provinciaController();
 
 const enrutadorProvincia = Router();
 
-enrutadorProvincia.route('/provincias').get(validarToken,ProvinciaController.listaProvincias);
+enrutadorProvincia.route('/provincias').get(ProvinciaController.listaProvincias);
 
 enrutadorProvincia.route('/provincias').post(ProvinciaController.guardarProvincias);
 
