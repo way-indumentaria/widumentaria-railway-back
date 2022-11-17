@@ -13,8 +13,9 @@ export class EstadisticasController {
             const fhasta = req.params.fhasta;
 
             console.log(fdesde+' - - '+fhasta)
-               
-            res.json(await obtenerImapagasPagasGastosTotales(fdesde,fhasta));  
+            
+            const ipg = await obtenerImapagasPagasGastosTotales(fdesde,fhasta)
+            res.json(ipg[0]);  
                 
         } catch (error) {
             return res.json(error);
@@ -28,8 +29,9 @@ export class EstadisticasController {
             const fhasta = req.params.fhasta;
 
             console.log(fdesde+' - - '+fhasta)
-               
-            res.json(await obtenerSerieCantidadVentas(fdesde,fhasta));  
+            
+            const cvpv = await obtenerSerieCantidadVentas(fdesde,fhasta)
+            res.json(cvpv[0]);  
                 
         } catch (error) {
             return res.json(error);
@@ -57,8 +59,8 @@ export class EstadisticasController {
         try {
             const fdesde = req.params.fdesde;
             const fhasta = req.params.fhasta;
-               
-            res.json((await obtenerVentasTotales(fdesde,fhasta))[0]);  
+            const vtpf = await obtenerVentasTotales(fdesde,fhasta)
+            res.json(vtpf[0]);  
 
         } catch (error) {
             console.log(error);
@@ -73,7 +75,8 @@ export class EstadisticasController {
             const fdesde = req.params.fdesde;
             const fhasta = req.params.fhasta;
                
-            res.json(await obtenerVentasProducto(fdesde,fhasta)); 
+            const vpp = await obtenerVentasProducto(fdesde,fhasta)
+            res.json(vpp[0]); 
             
         } catch (error) {
             return res.json(error)
@@ -87,7 +90,8 @@ export class EstadisticasController {
             const fdesde = req.params.fdesde;
             const fhasta = req.params.fhasta;
                
-            res.json(await obtenerVentasImpagasPagas(fdesde,fhasta)); 
+            const vip = await obtenerVentasImpagasPagas(fdesde,fhasta)
+            res.json(vip[0]); 
             
         } catch (error) {
             return res.json(error)
