@@ -43,8 +43,8 @@ export class EstadisticasController {
             const fhasta = req.params.fhasta;
 
             console.log(fdesde+' - - '+fhasta)
-               
-            res.json(await obtenerSerie(fdesde,fhasta));  
+            const vpv = await obtenerSerie(fdesde,fhasta)
+            res.json(vpv[0]);  
                 
         } catch (error) {
             return res.json(error);
@@ -58,7 +58,7 @@ export class EstadisticasController {
             const fdesde = req.params.fdesde;
             const fhasta = req.params.fhasta;
                
-            res.json(await obtenerVentasTotales(fdesde,fhasta));  
+            res.json((await obtenerVentasTotales(fdesde,fhasta))[0]);  
 
         } catch (error) {
             console.log(error);
