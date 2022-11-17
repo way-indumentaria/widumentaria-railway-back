@@ -18,8 +18,7 @@ class EstadisticasController {
                 const fdesde = req.params.fdesde;
                 const fhasta = req.params.fhasta;
                 console.log(fdesde + ' - - ' + fhasta);
-                const ipg = yield obtenerSeries_1.obtenerImapagasPagasGastosTotales(fdesde, fhasta);
-                res.json(ipg[0]);
+                res.json(yield obtenerSeries_1.obtenerImapagasPagasGastosTotales(fdesde, fhasta));
             }
             catch (error) {
                 return res.json(error);
@@ -32,8 +31,7 @@ class EstadisticasController {
                 const fdesde = req.params.fdesde;
                 const fhasta = req.params.fhasta;
                 console.log(fdesde + ' - - ' + fhasta);
-                const cvpv = yield obtenerSeries_1.obtenerSerieCantidadVentas(fdesde, fhasta);
-                res.json(cvpv[0]);
+                res.json(yield obtenerSeries_1.obtenerSerieCantidadVentas(fdesde, fhasta));
             }
             catch (error) {
                 return res.json(error);
@@ -46,8 +44,7 @@ class EstadisticasController {
                 const fdesde = req.params.fdesde;
                 const fhasta = req.params.fhasta;
                 console.log(fdesde + ' - - ' + fhasta);
-                const vpv = yield obtenerSeries_1.obtenerSerie(fdesde, fhasta);
-                res.json(vpv[0]);
+                res.json(yield obtenerSeries_1.obtenerSerie(fdesde, fhasta));
             }
             catch (error) {
                 return res.json(error);
@@ -59,8 +56,7 @@ class EstadisticasController {
             try {
                 const fdesde = req.params.fdesde;
                 const fhasta = req.params.fhasta;
-                const vtpf = yield obtenerSeries_1.obtenerVentasTotales(fdesde, fhasta);
-                res.json(vtpf[0]);
+                res.json(yield obtenerSeries_1.obtenerVentasTotales(fdesde, fhasta));
             }
             catch (error) {
                 console.log(error);
@@ -73,8 +69,7 @@ class EstadisticasController {
             try {
                 const fdesde = req.params.fdesde;
                 const fhasta = req.params.fhasta;
-                const vpp = yield obtenerSeries_1.obtenerVentasProducto(fdesde, fhasta);
-                res.json(vpp[0]);
+                res.json(yield obtenerSeries_1.obtenerVentasProducto(fdesde, fhasta));
             }
             catch (error) {
                 return res.json(error);
@@ -86,8 +81,7 @@ class EstadisticasController {
             try {
                 const fdesde = req.params.fdesde;
                 const fhasta = req.params.fhasta;
-                const vip = yield obtenerSeries_1.obtenerVentasImpagasPagas(fdesde, fhasta);
-                res.json(vip[0]);
+                res.json(yield obtenerSeries_1.obtenerVentasImpagasPagas(fdesde, fhasta));
             }
             catch (error) {
                 return res.json(error);

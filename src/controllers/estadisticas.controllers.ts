@@ -13,9 +13,8 @@ export class EstadisticasController {
             const fhasta = req.params.fhasta;
 
             console.log(fdesde+' - - '+fhasta)
-            
-            const ipg = await obtenerImapagasPagasGastosTotales(fdesde,fhasta)
-            res.json(ipg[0]);  
+               
+            res.json(await obtenerImapagasPagasGastosTotales(fdesde,fhasta));  
                 
         } catch (error) {
             return res.json(error);
@@ -29,9 +28,8 @@ export class EstadisticasController {
             const fhasta = req.params.fhasta;
 
             console.log(fdesde+' - - '+fhasta)
-            
-            const cvpv = await obtenerSerieCantidadVentas(fdesde,fhasta)
-            res.json(cvpv[0]);  
+               
+            res.json(await obtenerSerieCantidadVentas(fdesde,fhasta));  
                 
         } catch (error) {
             return res.json(error);
@@ -45,8 +43,8 @@ export class EstadisticasController {
             const fhasta = req.params.fhasta;
 
             console.log(fdesde+' - - '+fhasta)
-            const vpv = await obtenerSerie(fdesde,fhasta)
-            res.json(vpv[0]);  
+               
+            res.json(await obtenerSerie(fdesde,fhasta));  
                 
         } catch (error) {
             return res.json(error);
@@ -59,8 +57,8 @@ export class EstadisticasController {
         try {
             const fdesde = req.params.fdesde;
             const fhasta = req.params.fhasta;
-            const vtpf = await obtenerVentasTotales(fdesde,fhasta)
-            res.json(vtpf[0]);  
+               
+            res.json(await obtenerVentasTotales(fdesde,fhasta));  
 
         } catch (error) {
             console.log(error);
@@ -75,8 +73,7 @@ export class EstadisticasController {
             const fdesde = req.params.fdesde;
             const fhasta = req.params.fhasta;
                
-            const vpp = await obtenerVentasProducto(fdesde,fhasta)
-            res.json(vpp[0]); 
+            res.json(await obtenerVentasProducto(fdesde,fhasta)); 
             
         } catch (error) {
             return res.json(error)
@@ -90,8 +87,7 @@ export class EstadisticasController {
             const fdesde = req.params.fdesde;
             const fhasta = req.params.fhasta;
                
-            const vip = await obtenerVentasImpagasPagas(fdesde,fhasta)
-            res.json(vip[0]); 
+            res.json(await obtenerVentasImpagasPagas(fdesde,fhasta)); 
             
         } catch (error) {
             return res.json(error)
