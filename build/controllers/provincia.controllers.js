@@ -17,7 +17,7 @@ class provinciaController {
             try {
                 const db = yield database_1.conexion();
                 let provincias = yield db.query('select * from provincia');
-                res.json(provincias);
+                res.json(provincias[0]);
                 yield db.end();
             }
             catch (error) {
