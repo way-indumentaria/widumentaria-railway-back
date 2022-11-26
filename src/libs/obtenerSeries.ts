@@ -11,6 +11,8 @@ export async function obtenerVentasImpagasPagas(fdesde:string,fhasta:string)
         const ventas_impagas:any[] = await db.query("SELECT vd.producto,sum(p.precio_way*vd.cantidad)as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 0 GROUP by MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)",[fdesde,fhasta]);
         const ventas_pagas:any[] = await db.query("SELECT vd.producto,sum(p.precio_way*vd.cantidad)as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)",[fdesde,fhasta]);
 
+        console.log('testeando series')
+        console.log(ventas_impagas)
         if(ventas_impagas && ventas_pagas)
         {
             let ventas_array:any = [];
