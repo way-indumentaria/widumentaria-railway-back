@@ -16,7 +16,7 @@ export async function obtenerVentasImpagasPagas(fdesde:string,fhasta:string)
             let ventas_array:any = [];
         
             ventas_impagas.forEach((element:any) => {
-                ventas_array.push(element.importe);
+                ventas_array.push(Number(element.importe));
             });
 
             let objeto = {};
@@ -29,7 +29,7 @@ export async function obtenerVentasImpagasPagas(fdesde:string,fhasta:string)
             /* Sector de ventas pagas */
             let ventas_array2:any = [];
             ventas_pagas.forEach((element:any) => {
-                ventas_array2.push(element.importe);
+                ventas_array2.push(Number(element.importe));
             });
 
             let objeto2 = {};
@@ -69,7 +69,7 @@ export async function obtenerVentasTotales(fdesde:string,fhasta:string)
             let ventas_array:any = [];
           
             ventas.forEach((element:any) => {
-                ventas_array.push(element.importe);
+                ventas_array.push(Number(element.importe));
             });
     
             let objeto = {};
@@ -116,7 +116,7 @@ export async function obtenerSerie(fdesde:string,fhasta:string)
                 if(resultado)
                 {
                     resultado.forEach((element) => {
-                        importes.push(element.importe);
+                        importes.push(Number(element.importe));
                     });
     
                     objeto = {
@@ -176,7 +176,7 @@ export async function obtenerSerieCantidadVentas(fdesde:string,fhasta:string)
                 if(resultado)
                 {
                     resultado.forEach((element) => {
-                        cantidad.push(element.cantidad);
+                        cantidad.push(Number(element.cantidad));
                     });
 
                     objeto = {
@@ -262,7 +262,7 @@ export async function obtenerVentasProducto(fdesde:string,fhasta:string)
             ventas.forEach((element:any) => {
                 let objeto = {
                     name:element.descripcion,
-                    y:element.importe
+                    y:Number(element.importe)
                 };
                 ventas_array.push(objeto)
             });
@@ -297,9 +297,9 @@ export async function obtenerImapagasPagasGastosTotales(fdesde:string,fhasta:str
         const [gastos_fijos]:any = await db.query('SELECT sum(importe) as importe FROM gasto');
     
         let objeto = {
-            impagas:ventas_impagas[0].importe,
-            pagas:ventas_pagas[0].importe,
-            gastos:gastos_fijos[0].importe
+            impagas:Number(ventas_impagas[0].importe),
+            pagas:Number(ventas_pagas[0].importe),
+            gastos:Number(gastos_fijos[0].importe)
         }
         let respuesta:any = [];
         respuesta.push(objeto)

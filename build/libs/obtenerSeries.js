@@ -21,7 +21,7 @@ function obtenerVentasImpagasPagas(fdesde, fhasta) {
             if (ventas_impagas && ventas_pagas) {
                 let ventas_array = [];
                 ventas_impagas.forEach((element) => {
-                    ventas_array.push(element.importe);
+                    ventas_array.push(Number(element.importe));
                 });
                 let objeto = {};
                 objeto = {
@@ -31,7 +31,7 @@ function obtenerVentasImpagasPagas(fdesde, fhasta) {
                 /* Sector de ventas pagas */
                 let ventas_array2 = [];
                 ventas_pagas.forEach((element) => {
-                    ventas_array2.push(element.importe);
+                    ventas_array2.push(Number(element.importe));
                 });
                 let objeto2 = {};
                 objeto2 = {
@@ -62,7 +62,7 @@ function obtenerVentasTotales(fdesde, fhasta) {
             if (ventas) {
                 let ventas_array = [];
                 ventas.forEach((element) => {
-                    ventas_array.push(element.importe);
+                    ventas_array.push(Number(element.importe));
                 });
                 let objeto = {};
                 objeto = {
@@ -97,7 +97,7 @@ function obtenerSerie(fdesde, fhasta) {
                     const resultado = yield obtenerVentasVendedores(fdesde, fhasta, vendedores[index].id_vendedor);
                     if (resultado) {
                         resultado.forEach((element) => {
-                            importes.push(element.importe);
+                            importes.push(Number(element.importe));
                         });
                         objeto = {
                             name: vendedores[index].apellido + ', ' + vendedores[index].nombre,
@@ -144,7 +144,7 @@ function obtenerSerieCantidadVentas(fdesde, fhasta) {
                     const resultado = yield obtenerCantidadVentasVendedores(fdesde, fhasta, vendedores[index].id_vendedor);
                     if (resultado) {
                         resultado.forEach((element) => {
-                            cantidad.push(element.cantidad);
+                            cantidad.push(Number(element.cantidad));
                         });
                         objeto = {
                             name: vendedores[index].apellido + ', ' + vendedores[index].nombre,
@@ -205,7 +205,7 @@ function obtenerVentasProducto(fdesde, fhasta) {
                 ventas.forEach((element) => {
                     let objeto = {
                         name: element.descripcion,
-                        y: element.importe
+                        y: Number(element.importe)
                     };
                     ventas_array.push(objeto);
                 });
@@ -234,9 +234,9 @@ function obtenerImapagasPagasGastosTotales(fdesde, fhasta) {
             const [ventas_pagas] = yield db.query("SELECT sum(p.precio_way*vd.cantidad)as importe FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1", [fdesde, fhasta]);
             const [gastos_fijos] = yield db.query('SELECT sum(importe) as importe FROM gasto');
             let objeto = {
-                impagas: ventas_impagas[0].importe,
-                pagas: ventas_pagas[0].importe,
-                gastos: gastos_fijos[0].importe
+                impagas: Number(ventas_impagas[0].importe),
+                pagas: Number(ventas_pagas[0].importe),
+                gastos: Number(gastos_fijos[0].importe)
             };
             let respuesta = [];
             respuesta.push(objeto);
