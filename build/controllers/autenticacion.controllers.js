@@ -42,7 +42,7 @@ class AutenticacionController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db = yield database_1.conexion();
-                const usuario = yield db.query('select * from usuario where username = ?', [req.body.username]);
+                const [usuario] = yield db.query('select * from usuario where username = ?', [req.body.username]);
                 if (!usuario[0]) {
                     res.json(1);
                 }

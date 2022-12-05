@@ -16,8 +16,8 @@ class productoController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db = yield database_1.conexion();
-                let producto = yield db.query('select DATE_FORMAT(p.fecha_carga,"%d/%m/%Y") as fecha_carga, DATE_FORMAT(p.fecha_carga,"%d/%m/%Y") as fecha_carga_formateada, DATE_FORMAT(p.fecha_carga, "%d") as day, DATE_FORMAT(p.fecha_carga, "%m") as month, DATE_FORMAT(p.fecha_carga, "%Y") as year, p.id_producto, p.codigo, p.descripcion, p.precio_compra, p.precio_way, p.precio_final, c.descripcion as descripcion_categoria, p.estado, p.descuento, p.categoria_sexo, p.fecha_carga, p.categoria as categoria, p.stock from producto p, categoria c where p.categoria = c.id_categoria');
-                res.json(producto[0]);
+                let [producto] = yield db.query('select DATE_FORMAT(p.fecha_carga,"%d/%m/%Y") as fecha_carga, DATE_FORMAT(p.fecha_carga,"%d/%m/%Y") as fecha_carga_formateada, DATE_FORMAT(p.fecha_carga, "%d") as day, DATE_FORMAT(p.fecha_carga, "%m") as month, DATE_FORMAT(p.fecha_carga, "%Y") as year, p.id_producto, p.codigo, p.descripcion, p.precio_compra, p.precio_way, p.precio_final, c.descripcion as descripcion_categoria, p.estado, p.descuento, p.categoria_sexo, p.fecha_carga, p.categoria as categoria, p.stock from producto p, categoria c where p.categoria = c.id_categoria');
+                res.json(producto);
                 yield db.end();
             }
             catch (error) {
@@ -73,7 +73,7 @@ class productoController {
             try {
                 const db = yield database_1.conexion();
                 let codigo = req.params.codigo;
-                let unProducto = yield db.query("select * from producto where id_producto = ?", [codigo]);
+                let [unProducto] = yield db.query("select * from producto where id_producto = ?", [codigo]);
                 res.json(unProducto[0]);
                 yield db.end();
             }

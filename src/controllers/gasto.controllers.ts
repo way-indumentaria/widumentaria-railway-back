@@ -18,10 +18,10 @@ export class gastoController {
             const db = await conexion();
 
             //Realizamos la consulta para mostrar los datos de la tabla consolas
-            let gastos = await db.query('select g.id_gasto,g.descripcion,g.importe,cg.descripcion as descripcion_categoria, cg.id_categoria_gasto as categoria from gasto g, categoria_gasto cg where g.categoria = cg.id_categoria_gasto');
+            let [gastos]:any = await db.query('select g.id_gasto,g.descripcion,g.importe,cg.descripcion as descripcion_categoria, cg.id_categoria_gasto as categoria from gasto g, categoria_gasto cg where g.categoria = cg.id_categoria_gasto');
 
             //Retorna una respuesta en formato json de pagos
-            res.json(gastos[0]);
+            res.json(gastos);
             await db.end();
         } catch (error) {
             return res.json(error);
@@ -114,7 +114,7 @@ export class gastoController {
             let codigo = req.params.codigo;
 
             //Realiza la seleccion de una consola y la guarda en una variable
-            let unGasto = await db.query("select * from gasto where id_gasto = ?",[codigo]);
+            let [unGasto]:any = await db.query("select * from gasto where id_gasto = ?",[codigo]);
 
             //Retorna la consola seleccionada
             res.json(unGasto[0]);   

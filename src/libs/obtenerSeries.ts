@@ -8,16 +8,14 @@ export async function obtenerVentasImpagasPagas(fdesde:string,fhasta:string)
         const db = await conexion();
 
         //const ventas:any[] = await db.query('select ven.fecha_venta , sum((p.precio_way*ven.cantidad)-(p.precio_compra*ven.cantidad)) as importe from venta_detalle ven, producto p where p.id_producto = ven.producto and ven.fecha_venta BETWEEN ? AND ? and ven.estado = 1 group by MONTH(ven.fecha_venta)',[fdesde,fhasta]);
-        const ventas_impagas:any[] = await db.query("SELECT vd.producto,sum(p.precio_way*vd.cantidad)as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 0 GROUP by MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)",[fdesde,fhasta]);
-        const ventas_pagas:any[] = await db.query("SELECT vd.producto,sum(p.precio_way*vd.cantidad)as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)",[fdesde,fhasta]);
+        const [ventas_impagas]:any[] = await db.query("SELECT vd.producto,sum(p.precio_way*vd.cantidad)as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 0 GROUP by MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)",[fdesde,fhasta]);
+        const [ventas_pagas]:any[] = await db.query("SELECT vd.producto,sum(p.precio_way*vd.cantidad)as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)",[fdesde,fhasta]);
 
-        console.log('testeando series')
-        console.log(ventas_impagas)
         if(ventas_impagas && ventas_pagas)
         {
             let ventas_array:any = [];
         
-            ventas_impagas.forEach((element) => {
+            ventas_impagas.forEach((element:any) => {
                 ventas_array.push(element.importe);
             });
 
@@ -30,7 +28,7 @@ export async function obtenerVentasImpagasPagas(fdesde:string,fhasta:string)
 
             /* Sector de ventas pagas */
             let ventas_array2:any = [];
-            ventas_pagas.forEach((element) => {
+            ventas_pagas.forEach((element:any) => {
                 ventas_array2.push(element.importe);
             });
 
@@ -64,13 +62,13 @@ export async function obtenerVentasTotales(fdesde:string,fhasta:string)
         const db = await conexion();
 
         //const ventas:any[] = await db.query('select ven.fecha_venta , sum((p.precio_way*ven.cantidad)-(p.precio_compra*ven.cantidad)) as importe from venta_detalle ven, producto p where p.id_producto = ven.producto and ven.fecha_venta BETWEEN ? AND ? and ven.estado = 1 group by MONTH(ven.fecha_venta)',[fdesde,fhasta]);
-        const ventas:any[] = await db.query("SELECT vd.producto,sum((p.precio_way*vd.cantidad)-(p.precio_compra*vd.cantidad))as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)",[fdesde,fhasta]);
+        const [ventas]:any[] = await db.query("SELECT vd.producto,sum((p.precio_way*vd.cantidad)-(p.precio_compra*vd.cantidad))as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)",[fdesde,fhasta]);
     
         if(ventas)
         {
             let ventas_array:any = [];
           
-            ventas.forEach((element) => {
+            ventas.forEach((element:any) => {
                 ventas_array.push(element.importe);
             });
     
@@ -105,7 +103,7 @@ export async function obtenerSerie(fdesde:string,fhasta:string)
         const db = await conexion();
         let data:any = [];
         
-        const vendedores:any[] = await db.query('select * from vendedor where estado = 1');
+        const [vendedores]:any[] = await db.query('select * from vendedor where estado = 1');
     
         if(vendedores)
         {
@@ -147,7 +145,7 @@ async function obtenerVentasVendedores(fdesde:string,fhasta:string,vendedor:numb
 {
     const db = await conexion();
     //const resultado:any[] = await db.query('select vd.fecha_venta, sum(ifnull(vd.importe,0))as importe from venta_impaga_paga v, vendedor ven, venta_detalle vd where v.vendedor = ven.id_vendedor and vd.fecha_venta>= ? and vd.fecha_venta<= ? and v.vendedor = ?  and vd.estado = 1 group by MONTH(vd.fecha_venta)',[fdesde,fhasta,vendedor]);
-    const resultado:any[] = await db.query('SELECT vd.producto,sum(p.precio_way*vd.cantidad)as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.vendedor = ? and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by vip.vendedor,MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)',[vendedor,fdesde,fhasta]);
+    const [resultado]:any[] = await db.query('SELECT vd.producto,sum(p.precio_way*vd.cantidad)as importe ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.vendedor = ? and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by vip.vendedor,MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)',[vendedor,fdesde,fhasta]);
    
    //console.log(resultado)
     await db.end()
@@ -165,7 +163,7 @@ export async function obtenerSerieCantidadVentas(fdesde:string,fhasta:string)
         const db = await conexion();
         let data:any = [];
         
-        const vendedores:any[] = await db.query('select * from vendedor where estado = 1');
+        const [vendedores]:any[] = await db.query('select * from vendedor where estado = 1');
 
         if(vendedores)
         {
@@ -211,7 +209,7 @@ async function obtenerCantidadVentasVendedores(fdesde:string,fhasta:string,vende
 {
     const db = await conexion();
     //const resultado:any[] = await db.query('select vd.fecha_venta, sum(ifnull(vd.importe,0))as importe from venta_impaga_paga v, vendedor ven, venta_detalle vd where v.vendedor = ven.id_vendedor and vd.fecha_venta>= ? and vd.fecha_venta<= ? and v.vendedor = ?  and vd.estado = 1 group by MONTH(vd.fecha_venta)',[fdesde,fhasta,vendedor]);
-    const resultado:any[] = await db.query('SELECT sum(vd.cantidad) as cantidad ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.vendedor = ? and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by vip.vendedor,MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)',[vendedor,fdesde,fhasta]);
+    const [resultado]:any[] = await db.query('SELECT sum(vd.cantidad) as cantidad ,vip.vendedor, vip.fecha_venta FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.vendedor = ? and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by vip.vendedor,MONTH(vip.fecha_venta),YEAR(vip.fecha_venta)',[vendedor,fdesde,fhasta]);
    
    //console.log(resultado)
     await db.end()
@@ -255,13 +253,13 @@ export async function obtenerVentasProducto(fdesde:string,fhasta:string)
         const db = await conexion();
 
         //const ventas:any[] = await db.query('select ven.fecha_venta , sum((p.precio_way*ven.cantidad)-(p.precio_compra*ven.cantidad)) as importe from venta_detalle ven, producto p where p.id_producto = ven.producto and ven.fecha_venta BETWEEN ? AND ? and ven.estado = 1 group by MONTH(ven.fecha_venta)',[fdesde,fhasta]);
-        const ventas:any[] = await db.query("SELECT p.descripcion ,sum(p.precio_way*vd.cantidad) as importe FROM venta_detalle vd, venta_impaga_paga vip, producto p where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by vd.producto order by importe desc limit 5",[fdesde,fhasta]);
+        const [ventas]:any[] = await db.query("SELECT p.descripcion ,sum(p.precio_way*vd.cantidad) as importe FROM venta_detalle vd, venta_impaga_paga vip, producto p where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1 GROUP by vd.producto order by importe desc limit 5",[fdesde,fhasta]);
     
         if(ventas)
         {
             let ventas_array:any = [];
           
-            ventas.forEach((element) => {
+            ventas.forEach((element:any) => {
                 let objeto = {
                     name:element.descripcion,
                     y:element.importe
@@ -294,9 +292,9 @@ export async function obtenerImapagasPagasGastosTotales(fdesde:string,fhasta:str
         const db = await conexion();
 
         //const ventas:any[] = await db.query('select ven.fecha_venta , sum((p.precio_way*ven.cantidad)-(p.precio_compra*ven.cantidad)) as importe from venta_detalle ven, producto p where p.id_producto = ven.producto and ven.fecha_venta BETWEEN ? AND ? and ven.estado = 1 group by MONTH(ven.fecha_venta)',[fdesde,fhasta]);
-        const ventas_impagas:any = await db.query("SELECT sum(p.precio_way*vd.cantidad)as importe FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 0",[fdesde,fhasta]);
-        const ventas_pagas:any = await db.query("SELECT sum(p.precio_way*vd.cantidad)as importe FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1",[fdesde,fhasta]);
-        const gastos_fijos:any = await db.query('SELECT sum(importe) as importe FROM gasto');
+        const [ventas_impagas]:any = await db.query("SELECT sum(p.precio_way*vd.cantidad)as importe FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 0",[fdesde,fhasta]);
+        const [ventas_pagas]:any = await db.query("SELECT sum(p.precio_way*vd.cantidad)as importe FROM producto p, venta_detalle vd, venta_impaga_paga vip where vd.producto = p.id_producto and vd.id_venta_paga_impaga = vip.id_impaga_paga and vip.fecha_venta >= ? and vip.fecha_venta <= ? and vd.estado = 1",[fdesde,fhasta]);
+        const [gastos_fijos]:any = await db.query('SELECT sum(importe) as importe FROM gasto');
     
         let objeto = {
             impagas:ventas_impagas[0].importe,

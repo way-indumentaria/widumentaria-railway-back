@@ -22,7 +22,7 @@ export class AutenticacionController
 
             const db = await conexion();
             
-            const resultado = await db.query('insert into usuario set ?',[unUsuario]);
+            const resultado:any = await db.query('insert into usuario set ?',[unUsuario]);
 
             const token:string = jwt.sign({_id:resultado.insertId},process.env.TOKEN || '1234');
 
@@ -39,7 +39,7 @@ export class AutenticacionController
         try {
             const db = await conexion();
 
-            const usuario = await db.query('select * from usuario where username = ?',[req.body.username]);
+            const [usuario]:any = await db.query('select * from usuario where username = ?',[req.body.username]);
     
             if (!usuario[0]) 
             {

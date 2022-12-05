@@ -16,8 +16,8 @@ class categoriaController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db = yield database_1.conexion();
-                let categoria = yield db.query('select * from categoria');
-                res.json(categoria[0]);
+                let [categoria] = yield db.query('select * from categoria');
+                res.json(categoria);
                 yield db.end();
             }
             catch (error) {
@@ -74,7 +74,7 @@ class categoriaController {
             try {
                 const db = yield database_1.conexion();
                 let codigo = req.params.codigo;
-                let unaCategoria = yield db.query("select * from categoria where id_categoria = ?", [codigo]);
+                let [unaCategoria] = yield db.query("select * from categoria where id_categoria = ?", [codigo]);
                 res.json(unaCategoria[0]);
                 yield db.end();
             }

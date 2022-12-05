@@ -8,9 +8,9 @@ export class categoriaController {
         try {
             const db = await conexion();
 
-            let categoria = await db.query('select * from categoria');
+            let [categoria]:any = await db.query('select * from categoria');
     
-            res.json(categoria[0]);
+            res.json(categoria);
             await db.end();
         } catch (error) {
             return res.json(error);
@@ -85,7 +85,7 @@ export class categoriaController {
 
             let codigo = req.params.codigo;
     
-            let unaCategoria = await db.query("select * from categoria where id_categoria = ?",[codigo]);
+            let [unaCategoria]:any = await db.query("select * from categoria where id_categoria = ?",[codigo]);
     
             res.json(unaCategoria[0]); 
             await db.end();

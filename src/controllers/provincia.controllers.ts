@@ -9,9 +9,9 @@ export class provinciaController{
         try {
             const db = await conexion();
 
-            let provincias = await db.query('select * from provincia');
+            let [provincias]:any = await db.query('select * from provincia');
 
-            res.json(provincias[0]);
+            res.json(provincias);
             await db.end();
         } catch (error) {
             return res.json(error);
@@ -83,7 +83,7 @@ export class provinciaController{
 
             let codigo = req.params.codigo;
 
-            let unaProvincia = await db.query("select * from provincia where id_provincia = ?",[codigo]);
+            let [unaProvincia]:any = await db.query("select * from provincia where id_provincia = ?",[codigo]);
 
             res.json(unaProvincia[0]);
 

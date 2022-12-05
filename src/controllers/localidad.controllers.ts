@@ -9,9 +9,9 @@ export class localidadController{
         try {
             const db = await conexion();
 
-            let localidades = await db.query('select l.id_localidad,l.descripcion, p.descripcion as descripcion_provincia, p.id_provincia as provincia from localidad l, provincia p where l.provincia = p.id_provincia');
+            let [localidades]:any = await db.query('select l.id_localidad,l.descripcion, p.descripcion as descripcion_provincia, p.id_provincia as provincia from localidad l, provincia p where l.provincia = p.id_provincia');
     
-            res.json(localidades[0]);
+            res.json(localidades);
 
             await db.end();
         } catch (error) {
@@ -84,7 +84,7 @@ export class localidadController{
 
             let codigo = req.params.codigo;
 
-            let unaLocalidad = await db.query("select * from localidad where id_localidad = ?",[codigo]);
+            let [unaLocalidad]:any = await db.query("select * from localidad where id_localidad = ?",[codigo]);
 
             res.json(unaLocalidad[0]);
 

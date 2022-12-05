@@ -9,9 +9,9 @@ export class CatgastoController {
     public  async listaCatgasto(req:Request, res:Response){
         try {
             const db = await conexion();
-            let categoria_gasto = await db.query('select * from categoria_gasto');
+            let [categoria_gasto]:any = await db.query('select * from categoria_gasto');
 
-            res.json(categoria_gasto[0]);     
+            res.json(categoria_gasto);     
 
             await db.end();
         } catch (error) {
@@ -82,7 +82,7 @@ export class CatgastoController {
             const db = await conexion();
             let id = req.params.id;
     
-            let unaCatg = await db.query("select * from categoria_gasto where id_categoria_gasto = ? ",[id]);
+            let [unaCatg]:any = await db.query("select * from categoria_gasto where id_categoria_gasto = ? ",[id]);
             res.json(unaCatg[0]); 
             await db.end();
         } catch (error) {

@@ -9,9 +9,9 @@ export class ventaController{
         try {
             const db = await conexion();
 
-            let ventas = await db.query('select concat("v_",vr.id_vendedor) as id_vendedor_busqueda,DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta,DATE_FORMAT(v.fecha_venta,"%Y-%m-%d") as fecha_venta_origin, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, p.codigo as codigo_producto, p.precio_way as precio_costo,p.precio_final as precio_venta, v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p,vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor');
+            let [ventas] = await db.query('select concat("v_",vr.id_vendedor) as id_vendedor_busqueda,DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta,DATE_FORMAT(v.fecha_venta,"%Y-%m-%d") as fecha_venta_origin, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, p.codigo as codigo_producto, p.precio_way as precio_costo,p.precio_final as precio_venta, v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p,vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor');
             
-            res.json(ventas[0]);
+            res.json(ventas);
 
             await db.end();
         } catch (error) {
@@ -28,9 +28,9 @@ export class ventaController{
 
             //let ventas = await db.query('select DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p, vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor and v.vendedor = ?',[id_vendedor]);
 
-            let ventas = await db.query('select concat("v_",vr.id_vendedor) as id_vendedor_busqueda,DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(v.fecha_venta,"%Y-%m-%d") as fecha_venta_origin, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, p.precio_final as precio_venta,v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p,vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor and v.vendedor = ?',[id_vendedor]);
+            let [ventas] = await db.query('select concat("v_",vr.id_vendedor) as id_vendedor_busqueda,DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(v.fecha_venta,"%Y-%m-%d") as fecha_venta_origin, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, p.precio_final as precio_venta,v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p,vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor and v.vendedor = ?',[id_vendedor]);
             
-            res.json(ventas[0]);
+            res.json(ventas);
 
             await db.end();
         } catch (error) {
@@ -50,7 +50,7 @@ export class ventaController{
 
             let venta:IVenta = req.body;
 
-            const producto = await db.query('select * from producto where codigo = ?',[req.body.codigo_producto])
+            const [producto] = await db.query('select * from producto where codigo = ?',[req.body.codigo_producto])
 
             if(producto[0])
             {
@@ -153,7 +153,7 @@ export class ventaController{
 
             let codigo = req.params.codigo;
     
-            let unaVenta = await db.query("select * from venta where id_venta = ?",[codigo]);
+            let [unaVenta] = await db.query("select * from venta where id_venta = ?",[codigo]);
             
             res.json(unaVenta[0]);
 
@@ -172,7 +172,7 @@ export class ventaController{
             console.log(id);
             const db = await conexion();
 
-            const venta = await db.query('select * from venta where id_venta = ?',[id])
+            const [venta] = await db.query('select * from venta where id_venta = ?',[id])
 
             if(venta[0])
             {

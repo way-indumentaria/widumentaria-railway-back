@@ -17,8 +17,8 @@ class ventaController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db = yield database_1.conexion();
-                let ventas = yield db.query('select concat("v_",vr.id_vendedor) as id_vendedor_busqueda,DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta,DATE_FORMAT(v.fecha_venta,"%Y-%m-%d") as fecha_venta_origin, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, p.codigo as codigo_producto, p.precio_way as precio_costo,p.precio_final as precio_venta, v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p,vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor');
-                res.json(ventas[0]);
+                let [ventas] = yield db.query('select concat("v_",vr.id_vendedor) as id_vendedor_busqueda,DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta,DATE_FORMAT(v.fecha_venta,"%Y-%m-%d") as fecha_venta_origin, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, p.codigo as codigo_producto, p.precio_way as precio_costo,p.precio_final as precio_venta, v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p,vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor');
+                res.json(ventas);
                 yield db.end();
             }
             catch (error) {
@@ -32,8 +32,8 @@ class ventaController {
                 const db = yield database_1.conexion();
                 let id_vendedor = req.params.id_vendedor;
                 //let ventas = await db.query('select DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p, vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor and v.vendedor = ?',[id_vendedor]);
-                let ventas = yield db.query('select concat("v_",vr.id_vendedor) as id_vendedor_busqueda,DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(v.fecha_venta,"%Y-%m-%d") as fecha_venta_origin, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, p.precio_final as precio_venta,v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p,vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor and v.vendedor = ?', [id_vendedor]);
-                res.json(ventas[0]);
+                let [ventas] = yield db.query('select concat("v_",vr.id_vendedor) as id_vendedor_busqueda,DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(v.fecha_venta,"%Y-%m-%d") as fecha_venta_origin, DATE_FORMAT(v.fecha_venta,"%d/%m/%Y") as fecha_venta_formateada, DATE_FORMAT(v.fecha_venta, "%d") as day, DATE_FORMAT(v.fecha_venta, "%m") as month, DATE_FORMAT(v.fecha_venta, "%Y") as year, v.id_venta, p.descripcion as producto_descripcion, p.id_producto as producto, p.precio_final as precio_venta,v.cantidad, v.importe, v.fecha_venta, v.importe_unitario, v.estado, v.forma_pago, v.descuento_aplicado, v.vendedor as vendedor_venta, vr.nombre from venta v, producto p,vendedor vr where v.producto = p.id_producto and v.vendedor = vr.id_vendedor and v.vendedor = ?', [id_vendedor]);
+                res.json(ventas);
                 yield db.end();
             }
             catch (error) {
@@ -46,7 +46,7 @@ class ventaController {
             try {
                 const db = yield database_1.conexion();
                 let venta = req.body;
-                const producto = yield db.query('select * from producto where codigo = ?', [req.body.codigo_producto]);
+                const [producto] = yield db.query('select * from producto where codigo = ?', [req.body.codigo_producto]);
                 if (producto[0]) {
                     if (producto[0].stock > 0) {
                         //descontamos de stock
@@ -126,7 +126,7 @@ class ventaController {
             try {
                 const db = yield database_1.conexion();
                 let codigo = req.params.codigo;
-                let unaVenta = yield db.query("select * from venta where id_venta = ?", [codigo]);
+                let [unaVenta] = yield db.query("select * from venta where id_venta = ?", [codigo]);
                 res.json(unaVenta[0]);
                 yield db.end();
             }
@@ -141,7 +141,7 @@ class ventaController {
                 const id = req.params.id;
                 console.log(id);
                 const db = yield database_1.conexion();
-                const venta = yield db.query('select * from venta where id_venta = ?', [id]);
+                const [venta] = yield db.query('select * from venta where id_venta = ?', [id]);
                 if (venta[0]) {
                     if (venta[0].cantidad > 1) {
                         yield db.query("update venta set cantidad = cantidad-1 where id_venta = ?", [id]);

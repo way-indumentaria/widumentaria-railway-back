@@ -26,7 +26,7 @@ class VentaDetalleController {
                 const db = yield database_1.conexion();
                 let id_vip = req.params.id_vip;
                 let estado = 0;
-                let venta_impagas = yield db.query('select ven.id_venta_detalle,ven.id_venta_paga_impaga,ven.producto,ven.cantidad as cantidad, (ven.importe*ven.cantidad) as importe,p.codigo as codigo_producto,p.descripcion as descripcion_producto,p.precio_final,p.precio_way as precio_costo,ven.estado,ven.estado_confirmacion,DATE_FORMAT(ven.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(vip.fecha_venta,"%d/%m/%Y") as fecha_planilla from venta_detalle ven, producto p, venta_impaga_paga vip where ven.producto = p.id_producto and ven.id_venta_paga_impaga = ? and ven.id_venta_paga_impaga = vip.id_impaga_paga and ven.estado = ?', [id_vip, estado]);
+                let [venta_impagas] = yield db.query('select ven.id_venta_detalle,ven.id_venta_paga_impaga,ven.producto,ven.cantidad as cantidad, (ven.importe*ven.cantidad) as importe,p.codigo as codigo_producto,p.descripcion as descripcion_producto,p.precio_final,p.precio_way as precio_costo,ven.estado,ven.estado_confirmacion,DATE_FORMAT(ven.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(vip.fecha_venta,"%d/%m/%Y") as fecha_planilla from venta_detalle ven, producto p, venta_impaga_paga vip where ven.producto = p.id_producto and ven.id_venta_paga_impaga = ? and ven.id_venta_paga_impaga = vip.id_impaga_paga and ven.estado = ?', [id_vip, estado]);
                 try {
                     for (var venta_impagas_1 = __asyncValues(venta_impagas), venta_impagas_1_1; venta_impagas_1_1 = yield venta_impagas_1.next(), !venta_impagas_1_1.done;) {
                         let vi = venta_impagas_1_1.value;
@@ -55,8 +55,8 @@ class VentaDetalleController {
                 const db = yield database_1.conexion();
                 let id_vip = req.params.id_vip;
                 let estado = Number(req.params.estado);
-                let venta_impagas = yield db.query('select ven.id_venta_detalle,ven.id_venta_paga_impaga,ven.producto,ven.cantidad as cantidad, (ven.importe*ven.cantidad) as importe,p.codigo as codigo_producto,p.descripcion as descripcion_producto,p.precio_final,p.precio_way as precio_costo,ven.estado,ven.estado_confirmacion,DATE_FORMAT(ven.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(vip.fecha_venta,"%d/%m/%Y") as fecha_planilla from venta_detalle ven, producto p, venta_impaga_paga vip where ven.producto = p.id_producto and ven.id_venta_paga_impaga = ? and ven.id_venta_paga_impaga = vip.id_impaga_paga and ven.estado = ?', [id_vip, estado]);
-                res.json(venta_impagas[0]);
+                let [venta_impagas] = yield db.query('select ven.id_venta_detalle,ven.id_venta_paga_impaga,ven.producto,ven.cantidad as cantidad, (ven.importe*ven.cantidad) as importe,p.codigo as codigo_producto,p.descripcion as descripcion_producto,p.precio_final,p.precio_way as precio_costo,ven.estado,ven.estado_confirmacion,DATE_FORMAT(ven.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(vip.fecha_venta,"%d/%m/%Y") as fecha_planilla from venta_detalle ven, producto p, venta_impaga_paga vip where ven.producto = p.id_producto and ven.id_venta_paga_impaga = ? and ven.id_venta_paga_impaga = vip.id_impaga_paga and ven.estado = ?', [id_vip, estado]);
+                res.json(venta_impagas);
                 yield db.end();
             }
             catch (error) {
@@ -71,7 +71,7 @@ class VentaDetalleController {
                 let id_venta_detalle = req.params.id_venta_detalle;
                 let id_producto = req.params.id_producto;
                 let estado = req.params.estado;
-                const buscar_cantidad_vd = yield db.query('select * from venta_detalle where id_venta_detalle = ?', [id_venta_detalle]);
+                const [buscar_cantidad_vd] = yield db.query('select * from venta_detalle where id_venta_detalle = ?', [id_venta_detalle]);
                 if (buscar_cantidad_vd[0]) {
                     if (Number(estado) == 0) {
                         const datos_vip = {
@@ -145,15 +145,15 @@ class VentaDetalleController {
                 let id_producto = req.params.id_producto;
                 let tipo_movimiento = Number(req.params.tipo_movimiento);
                 let vendedor = req.params.vendedor;
-                const un_producto = yield db.query('select * from producto where id_producto = ?', [id_producto]);
-                const buscar_cantidad_vd = yield db.query('select * from venta_detalle where id_venta_detalle = ?', [id_venta_detalle]);
+                const [un_producto] = yield db.query('select * from producto where id_producto = ?', [id_producto]);
+                const [buscar_cantidad_vd] = yield db.query('select * from venta_detalle where id_venta_detalle = ?', [id_venta_detalle]);
                 if (buscar_cantidad_vd[0]) {
                     if (buscar_cantidad_vd[0].cantidad > 1) {
                         console.log('Mayor a uno: esntonces UPDATE');
                         yield db.query('update venta_detalle SET cantidad = cantidad-1 where id_venta_detalle = ?', [id_venta_detalle]);
                         if (tipo_movimiento == 1) {
                             console.log('Movimiento a nueva venta');
-                            const grilla_ventas = yield db.query('select * from venta where producto = ? and vendedor = ?', [id_producto, vendedor]);
+                            const [grilla_ventas] = yield db.query('select * from venta where producto = ? and vendedor = ?', [id_producto, vendedor]);
                             if (grilla_ventas[0]) {
                                 yield db.query('update venta SET cantidad = cantidad+1 where id_venta = ?', [grilla_ventas[0].id_venta]);
                             }
@@ -179,15 +179,15 @@ class VentaDetalleController {
                     }
                     else {
                         console.log('Menor a uno: esntonces DELETE');
-                        const vd = yield db.query('select * from venta_detalle where id_venta_detalle = ?', [id_venta_detalle]);
+                        const [vd] = yield db.query('select * from venta_detalle where id_venta_detalle = ?', [id_venta_detalle]);
                         yield db.query('delete from venta_detalle where id_venta_detalle = ?', [id_venta_detalle]);
-                        const vpi = yield db.query('select * from venta_detalle where id_venta_paga_impaga = ?', [vd[0].id_venta_paga_impaga]);
+                        const [vpi] = yield db.query('select * from venta_detalle where id_venta_paga_impaga = ?', [vd[0].id_venta_paga_impaga]);
                         if (vpi[0] == undefined) {
                             yield db.query('delete from venta_impaga_paga where id_impaga_paga = ?', [vd[0].id_venta_paga_impaga]);
                         }
                         if (tipo_movimiento == 1) {
                             console.log('Movimiento a nueva venta');
-                            const grilla_ventas = yield db.query('select * from venta where producto = ? and vendedor = ?', [id_producto, vendedor]);
+                            const [grilla_ventas] = yield db.query('select * from venta where producto = ? and vendedor = ?', [id_producto, vendedor]);
                             if (grilla_ventas[0]) {
                                 console.log('Se actualiza nueva venta');
                                 yield db.query('update venta SET cantidad = cantidad+1, importe=(cantidad*importe) where id_venta = ?', [grilla_ventas[0].id_venta]);
@@ -245,11 +245,11 @@ class VentaDetalleController {
                 const db = yield database_1.conexion();
                 const vendedor = req.params.vendedor;
                 console.log(vendedor);
-                const ultima_planilla = yield db.query('select max(id_impaga_paga) as id_ip from venta_impaga_paga where vendedor = ?', [Number(vendedor)]);
+                const [ultima_planilla] = yield db.query('select max(id_impaga_paga) as id_ip from venta_impaga_paga where vendedor = ?', [Number(vendedor)]);
                 console.log(ultima_planilla[0].id_ip);
                 if (ultima_planilla[0]) {
-                    const impagas = yield db.query('select sum(p.precio_way*cantidad) as total from venta_detalle ven, producto p where ven.producto = p.id_producto and id_venta_paga_impaga = ? and ven.estado = 0', [ultima_planilla[0].id_ip]);
-                    const pagas = yield db.query('select sum(p.precio_way*cantidad) as total from venta_detalle ven, producto p where ven.producto = p.id_producto and id_venta_paga_impaga = ? and ven.estado = 1', [ultima_planilla[0].id_ip]);
+                    const [impagas] = yield db.query('select sum(p.precio_way*cantidad) as total from venta_detalle ven, producto p where ven.producto = p.id_producto and id_venta_paga_impaga = ? and ven.estado = 0', [ultima_planilla[0].id_ip]);
+                    const [pagas] = yield db.query('select sum(p.precio_way*cantidad) as total from venta_detalle ven, producto p where ven.producto = p.id_producto and id_venta_paga_impaga = ? and ven.estado = 1', [ultima_planilla[0].id_ip]);
                     const datos = {
                         total_impagas: impagas[0].total,
                         total_pagas: pagas[0].total

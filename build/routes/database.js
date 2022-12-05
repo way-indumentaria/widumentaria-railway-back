@@ -12,7 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.conexion = void 0;
 //Importamos el metodo "createPool" que nos permitira conectarnos a la base de datos desde "promise-mysql"
 //import { createPool } from "promise-mysql";
-const promise_1 = require("mysql2/promise");
+//import {createPool} from 'mysql2/promise'
+const { createPool } = require('mysql2/promise');
+//const { createPool } = require('promise-mysql');
+//import { createPool } from 'mysql';
+//const { createPool } = require('mysql');
 const config_1 = require("../config");
 //Funcion que se encargara de la conexion a las base de datos
 function conexion() {
@@ -31,13 +35,20 @@ function conexion() {
             port:DB_PORT,
             database:DB_PASSWORD
         });*/
-        const connect = yield promise_1.createPool({
+        const connect = yield createPool({
             user: config_1.DB_USER,
             password: config_1.DB_PASSWORD,
             host: config_1.DB_HOST,
             port: config_1.DB_PORT,
             database: config_1.DB_NAME
         });
+        /*const connect = await createPool({
+            user: 'root',
+            password: 'utolK6PEBxb1nZqOQBKw',
+            host: 'containers-us-west-109.railway.app',
+            port: 7396,
+            database: 'railway'
+        })*/
         //Entrega una respuesta
         return connect;
     });

@@ -13,7 +13,7 @@ export class VentaDetalleController {
             let id_vip = req.params.id_vip;
             let estado = 0;
     
-            let venta_impagas = await db.query('select ven.id_venta_detalle,ven.id_venta_paga_impaga,ven.producto,ven.cantidad as cantidad, (ven.importe*ven.cantidad) as importe,p.codigo as codigo_producto,p.descripcion as descripcion_producto,p.precio_final,p.precio_way as precio_costo,ven.estado,ven.estado_confirmacion,DATE_FORMAT(ven.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(vip.fecha_venta,"%d/%m/%Y") as fecha_planilla from venta_detalle ven, producto p, venta_impaga_paga vip where ven.producto = p.id_producto and ven.id_venta_paga_impaga = ? and ven.id_venta_paga_impaga = vip.id_impaga_paga and ven.estado = ?',[id_vip,estado]);
+            let [venta_impagas] = await db.query('select ven.id_venta_detalle,ven.id_venta_paga_impaga,ven.producto,ven.cantidad as cantidad, (ven.importe*ven.cantidad) as importe,p.codigo as codigo_producto,p.descripcion as descripcion_producto,p.precio_final,p.precio_way as precio_costo,ven.estado,ven.estado_confirmacion,DATE_FORMAT(ven.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(vip.fecha_venta,"%d/%m/%Y") as fecha_planilla from venta_detalle ven, producto p, venta_impaga_paga vip where ven.producto = p.id_producto and ven.id_venta_paga_impaga = ? and ven.id_venta_paga_impaga = vip.id_impaga_paga and ven.estado = ?',[id_vip,estado]);
             
             for await (let vi of venta_impagas) {
                 await db.query('update venta_detalle SET estado = 1 where id_venta_detalle = ?',[vi.id_venta_detalle])
@@ -35,9 +35,9 @@ export class VentaDetalleController {
             let id_vip = req.params.id_vip;
             let estado = Number(req.params.estado);
     
-            let venta_impagas = await db.query('select ven.id_venta_detalle,ven.id_venta_paga_impaga,ven.producto,ven.cantidad as cantidad, (ven.importe*ven.cantidad) as importe,p.codigo as codigo_producto,p.descripcion as descripcion_producto,p.precio_final,p.precio_way as precio_costo,ven.estado,ven.estado_confirmacion,DATE_FORMAT(ven.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(vip.fecha_venta,"%d/%m/%Y") as fecha_planilla from venta_detalle ven, producto p, venta_impaga_paga vip where ven.producto = p.id_producto and ven.id_venta_paga_impaga = ? and ven.id_venta_paga_impaga = vip.id_impaga_paga and ven.estado = ?',[id_vip,estado]);
+            let [venta_impagas] = await db.query('select ven.id_venta_detalle,ven.id_venta_paga_impaga,ven.producto,ven.cantidad as cantidad, (ven.importe*ven.cantidad) as importe,p.codigo as codigo_producto,p.descripcion as descripcion_producto,p.precio_final,p.precio_way as precio_costo,ven.estado,ven.estado_confirmacion,DATE_FORMAT(ven.fecha_venta,"%d/%m/%Y") as fecha_venta, DATE_FORMAT(vip.fecha_venta,"%d/%m/%Y") as fecha_planilla from venta_detalle ven, producto p, venta_impaga_paga vip where ven.producto = p.id_producto and ven.id_venta_paga_impaga = ? and ven.id_venta_paga_impaga = vip.id_impaga_paga and ven.estado = ?',[id_vip,estado]);
             
-            res.json(venta_impagas[0]);
+            res.json(venta_impagas);
 
             await db.end();
  
@@ -55,7 +55,7 @@ export class VentaDetalleController {
             let id_producto = req.params.id_producto;
             let estado = req.params.estado;
 
-            const buscar_cantidad_vd = await db.query('select * from venta_detalle where id_venta_detalle = ?',[id_venta_detalle]);
+            const [buscar_cantidad_vd] = await db.query('select * from venta_detalle where id_venta_detalle = ?',[id_venta_detalle]);
             if(buscar_cantidad_vd[0]){
 
                 if(Number(estado) == 0)
@@ -144,9 +144,9 @@ export class VentaDetalleController {
             let tipo_movimiento = Number(req.params.tipo_movimiento);
             let vendedor = req.params.vendedor;
 
-            const un_producto= await db.query('select * from producto where id_producto = ?',[id_producto]);
+            const [un_producto]= await db.query('select * from producto where id_producto = ?',[id_producto]);
 
-            const buscar_cantidad_vd = await db.query('select * from venta_detalle where id_venta_detalle = ?',[id_venta_detalle]);
+            const [buscar_cantidad_vd] = await db.query('select * from venta_detalle where id_venta_detalle = ?',[id_venta_detalle]);
             
             if(buscar_cantidad_vd[0])
             {
@@ -157,7 +157,7 @@ export class VentaDetalleController {
                     if(tipo_movimiento == 1)
                     {
                         console.log('Movimiento a nueva venta');
-                        const grilla_ventas = await db.query('select * from venta where producto = ? and vendedor = ?',[id_producto,vendedor]);
+                        const [grilla_ventas] = await db.query('select * from venta where producto = ? and vendedor = ?',[id_producto,vendedor]);
                         if(grilla_ventas[0])
                         {
                             await db.query('update venta SET cantidad = cantidad+1 where id_venta = ?',[grilla_ventas[0].id_venta]);
@@ -183,11 +183,11 @@ export class VentaDetalleController {
                 else{
                     console.log('Menor a uno: esntonces DELETE');
 
-                    const vd = await db.query('select * from venta_detalle where id_venta_detalle = ?',[id_venta_detalle]);
+                    const [vd] = await db.query('select * from venta_detalle where id_venta_detalle = ?',[id_venta_detalle]);
 
                     await db.query('delete from venta_detalle where id_venta_detalle = ?',[id_venta_detalle]);
 
-                    const vpi = await db.query('select * from venta_detalle where id_venta_paga_impaga = ?',[vd[0].id_venta_paga_impaga]);
+                    const [vpi] = await db.query('select * from venta_detalle where id_venta_paga_impaga = ?',[vd[0].id_venta_paga_impaga]);
                     
                     if(vpi[0] == undefined)
                     {
@@ -198,7 +198,7 @@ export class VentaDetalleController {
                     if(tipo_movimiento == 1)
                     {
                         console.log('Movimiento a nueva venta');
-                        const grilla_ventas = await db.query('select * from venta where producto = ? and vendedor = ?',[id_producto,vendedor]);
+                        const [grilla_ventas] = await db.query('select * from venta where producto = ? and vendedor = ?',[id_producto,vendedor]);
                         if(grilla_ventas[0])
                         {
                             console.log('Se actualiza nueva venta');
@@ -264,12 +264,12 @@ export class VentaDetalleController {
 
             const vendedor = req.params.vendedor;
             console.log(vendedor);
-            const ultima_planilla = await db.query('select max(id_impaga_paga) as id_ip from venta_impaga_paga where vendedor = ?',[Number(vendedor)]);
+            const [ultima_planilla] = await db.query('select max(id_impaga_paga) as id_ip from venta_impaga_paga where vendedor = ?',[Number(vendedor)]);
             console.log(ultima_planilla[0].id_ip);
             if(ultima_planilla[0])
             {
-                const impagas = await db.query('select sum(p.precio_way*cantidad) as total from venta_detalle ven, producto p where ven.producto = p.id_producto and id_venta_paga_impaga = ? and ven.estado = 0',[ultima_planilla[0].id_ip]);
-                const pagas = await db.query('select sum(p.precio_way*cantidad) as total from venta_detalle ven, producto p where ven.producto = p.id_producto and id_venta_paga_impaga = ? and ven.estado = 1',[ultima_planilla[0].id_ip]);
+                const [impagas] = await db.query('select sum(p.precio_way*cantidad) as total from venta_detalle ven, producto p where ven.producto = p.id_producto and id_venta_paga_impaga = ? and ven.estado = 0',[ultima_planilla[0].id_ip]);
+                const [pagas] = await db.query('select sum(p.precio_way*cantidad) as total from venta_detalle ven, producto p where ven.producto = p.id_producto and id_venta_paga_impaga = ? and ven.estado = 1',[ultima_planilla[0].id_ip]);
                
                 const datos = {
                     total_impagas:impagas[0].total,

@@ -18,8 +18,8 @@ class CatgastoController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db = yield database_1.conexion();
-                let categoria_gasto = yield db.query('select * from categoria_gasto');
-                res.json(categoria_gasto[0]);
+                let [categoria_gasto] = yield db.query('select * from categoria_gasto');
+                res.json(categoria_gasto);
                 yield db.end();
             }
             catch (error) {
@@ -83,7 +83,7 @@ class CatgastoController {
             try {
                 const db = yield database_1.conexion();
                 let id = req.params.id;
-                let unaCatg = yield db.query("select * from categoria_gasto where id_categoria_gasto = ? ", [id]);
+                let [unaCatg] = yield db.query("select * from categoria_gasto where id_categoria_gasto = ? ", [id]);
                 res.json(unaCatg[0]);
                 yield db.end();
             }

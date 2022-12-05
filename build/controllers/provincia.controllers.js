@@ -16,8 +16,8 @@ class provinciaController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db = yield database_1.conexion();
-                let provincias = yield db.query('select * from provincia');
-                res.json(provincias[0]);
+                let [provincias] = yield db.query('select * from provincia');
+                res.json(provincias);
                 yield db.end();
             }
             catch (error) {
@@ -73,7 +73,7 @@ class provinciaController {
             try {
                 const db = yield database_1.conexion();
                 let codigo = req.params.codigo;
-                let unaProvincia = yield db.query("select * from provincia where id_provincia = ?", [codigo]);
+                let [unaProvincia] = yield db.query("select * from provincia where id_provincia = ?", [codigo]);
                 res.json(unaProvincia[0]);
                 yield db.end();
             }

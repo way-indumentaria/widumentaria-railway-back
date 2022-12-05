@@ -1,6 +1,11 @@
 //Importamos el metodo "createPool" que nos permitira conectarnos a la base de datos desde "promise-mysql"
 //import { createPool } from "promise-mysql";
-import {createPool} from 'mysql2/promise'
+//import {createPool} from 'mysql2/promise'
+const { createPool } = require('mysql2/promise');
+//const { createPool } = require('promise-mysql');
+//import { createPool } from 'mysql';
+//const { createPool } = require('mysql');
+
 import {
     DB_HOST,
     DB_NAME,
@@ -35,6 +40,14 @@ export async function conexion()
         port: DB_PORT,
         database: DB_NAME
     })
+
+    /*const connect = await createPool({
+        user: 'root',
+        password: 'utolK6PEBxb1nZqOQBKw',
+        host: 'containers-us-west-109.railway.app',
+        port: 7396,
+        database: 'railway'
+    })*/
 
     //Entrega una respuesta
     return connect;

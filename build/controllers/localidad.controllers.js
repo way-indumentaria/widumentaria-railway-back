@@ -16,8 +16,8 @@ class localidadController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db = yield database_1.conexion();
-                let localidades = yield db.query('select l.id_localidad,l.descripcion, p.descripcion as descripcion_provincia, p.id_provincia as provincia from localidad l, provincia p where l.provincia = p.id_provincia');
-                res.json(localidades[0]);
+                let [localidades] = yield db.query('select l.id_localidad,l.descripcion, p.descripcion as descripcion_provincia, p.id_provincia as provincia from localidad l, provincia p where l.provincia = p.id_provincia');
+                res.json(localidades);
                 yield db.end();
             }
             catch (error) {
@@ -73,7 +73,7 @@ class localidadController {
             try {
                 const db = yield database_1.conexion();
                 let codigo = req.params.codigo;
-                let unaLocalidad = yield db.query("select * from localidad where id_localidad = ?", [codigo]);
+                let [unaLocalidad] = yield db.query("select * from localidad where id_localidad = ?", [codigo]);
                 res.json(unaLocalidad[0]);
                 yield db.end();
             }

@@ -26,8 +26,8 @@ class vendedorController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db = yield database_1.conexion();
-                let vendedores = yield db.query('select v.id_vendedor, v.nombre, v.apellido, v.dni, v.domicilio, v.email, l.descripcion as descripcion, l.id_localidad as id_localidad , v.adjunto, v.telefono, v.nom_garante, v.ape_garante, v.email_garante, v.dni_garante, v.domicilio_garante, v.telefono_garante, v.estado, v.imagen_perfil from vendedor v,localidad l where v.localidad = l.id_localidad order by v.nombre asc');
-                res.json(vendedores[0]);
+                let [vendedores] = yield db.query('select v.id_vendedor, v.nombre, v.apellido, v.dni, v.domicilio, v.email, l.descripcion as descripcion, l.id_localidad as id_localidad , v.adjunto, v.telefono, v.nom_garante, v.ape_garante, v.email_garante, v.dni_garante, v.domicilio_garante, v.telefono_garante, v.estado, v.imagen_perfil from vendedor v,localidad l where v.localidad = l.id_localidad order by v.nombre asc');
+                res.json(vendedores);
                 yield db.end();
             }
             catch (error) {
@@ -153,7 +153,7 @@ class vendedorController {
             try {
                 const db = yield database_1.conexion();
                 let codigo = req.params.codigo;
-                let unVendedor = yield db.query("select * from vendedor where id_vendedor = ?", [codigo]);
+                let [unVendedor] = yield db.query("select * from vendedor where id_vendedor = ?", [codigo]);
                 res.json(unVendedor[0]);
                 yield db.end();
             }
