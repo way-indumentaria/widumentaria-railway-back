@@ -63,7 +63,7 @@ export class ventaController{
                     await db.query("update venta set ? where vendedor = ?",[{fecha_venta:new Date()},req.body.vendedor]);
 
                     /* verificamos si ya se encuentra cargado o no el producto */
-                    const verificar_venta_producto = await db.query('select * from venta where vendedor = ? and producto = ?',[req.body.vendedor,producto[0].id_producto]);
+                    const [verificar_venta_producto] = await db.query('select * from venta where vendedor = ? and producto = ?',[req.body.vendedor,producto[0].id_producto]);
 
                     if(verificar_venta_producto[0]){
                         const datos_venta = {

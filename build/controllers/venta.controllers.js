@@ -54,7 +54,7 @@ class ventaController {
                         //como se va alterar la planilla ya que hace recambio debemos actualizar todas las fechas de planilla de las ventas de este vendedor
                         yield db.query("update venta set ? where vendedor = ?", [{ fecha_venta: new Date() }, req.body.vendedor]);
                         /* verificamos si ya se encuentra cargado o no el producto */
-                        const verificar_venta_producto = yield db.query('select * from venta where vendedor = ? and producto = ?', [req.body.vendedor, producto[0].id_producto]);
+                        const [verificar_venta_producto] = yield db.query('select * from venta where vendedor = ? and producto = ?', [req.body.vendedor, producto[0].id_producto]);
                         if (verificar_venta_producto[0]) {
                             const datos_venta = {
                                 cantidad: Number(verificar_venta_producto[0].cantidad) + Number(req.body.cantidad),
