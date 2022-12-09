@@ -70,7 +70,7 @@ export class VentaDetalleController {
                 {
                     await db.query('update venta_detalle SET cantidad = cantidad-1 where id_venta_detalle = ?',[id_venta_detalle]);
                 
-                    const venta_detalle = await db.query('select * from venta_detalle where producto = ? and estado = ? and id_venta_paga_impaga = ?',[id_producto,estado,buscar_cantidad_vd[0].id_venta_paga_impaga]);
+                    const [venta_detalle] = await db.query('select * from venta_detalle where producto = ? and estado = ? and id_venta_paga_impaga = ?',[id_producto,estado,buscar_cantidad_vd[0].id_venta_paga_impaga]);
 
                     if(venta_detalle[0]){
                         console.log('entro al if venta detalle');
@@ -104,7 +104,7 @@ export class VentaDetalleController {
                     console.log(id_venta_detalle);
                     await db.query('delete from venta_detalle where id_venta_detalle = ?',[id_venta_detalle]);
                 
-                    const venta_detalle = await db.query('select * from venta_detalle where producto = ? and estado = ? and id_venta_paga_impaga = ?',[id_producto,estado,buscar_cantidad_vd[0].id_venta_paga_impaga]);
+                    const [venta_detalle] = await db.query('select * from venta_detalle where producto = ? and estado = ? and id_venta_paga_impaga = ?',[id_producto,estado,buscar_cantidad_vd[0].id_venta_paga_impaga]);
             
                     if(venta_detalle[0]){
                         await db.query('update venta_detalle SET cantidad = cantidad+1 where estado = ? and id_venta_detalle = ?',[estado,venta_detalle[0].id_venta_detalle]);

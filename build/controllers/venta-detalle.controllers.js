@@ -81,7 +81,7 @@ class VentaDetalleController {
                     }
                     if (buscar_cantidad_vd[0].cantidad > 1) {
                         yield db.query('update venta_detalle SET cantidad = cantidad-1 where id_venta_detalle = ?', [id_venta_detalle]);
-                        const venta_detalle = yield db.query('select * from venta_detalle where producto = ? and estado = ? and id_venta_paga_impaga = ?', [id_producto, estado, buscar_cantidad_vd[0].id_venta_paga_impaga]);
+                        const [venta_detalle] = yield db.query('select * from venta_detalle where producto = ? and estado = ? and id_venta_paga_impaga = ?', [id_producto, estado, buscar_cantidad_vd[0].id_venta_paga_impaga]);
                         if (venta_detalle[0]) {
                             console.log('entro al if venta detalle');
                             yield db.query('update venta_detalle SET cantidad = cantidad+1 where estado = ? and id_venta_detalle = ?', [estado, venta_detalle[0].id_venta_detalle]);
@@ -111,7 +111,7 @@ class VentaDetalleController {
                         }
                         console.log(id_venta_detalle);
                         yield db.query('delete from venta_detalle where id_venta_detalle = ?', [id_venta_detalle]);
-                        const venta_detalle = yield db.query('select * from venta_detalle where producto = ? and estado = ? and id_venta_paga_impaga = ?', [id_producto, estado, buscar_cantidad_vd[0].id_venta_paga_impaga]);
+                        const [venta_detalle] = yield db.query('select * from venta_detalle where producto = ? and estado = ? and id_venta_paga_impaga = ?', [id_producto, estado, buscar_cantidad_vd[0].id_venta_paga_impaga]);
                         if (venta_detalle[0]) {
                             yield db.query('update venta_detalle SET cantidad = cantidad+1 where estado = ? and id_venta_detalle = ?', [estado, venta_detalle[0].id_venta_detalle]);
                         }
