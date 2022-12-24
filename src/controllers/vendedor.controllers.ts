@@ -63,6 +63,7 @@ export class vendedorController{
                 vendedor_formateado.public_id = resultado_cloudinary.public_id;
             }
 
+            //prueba
             await db.query('insert into vendedor set ?',[vendedor_formateado]);
 
             if(files[0]){

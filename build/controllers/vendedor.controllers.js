@@ -64,6 +64,7 @@ class vendedorController {
                     vendedor_formateado.imagen_perfil = resultado_cloudinary.secure_url;
                     vendedor_formateado.public_id = resultado_cloudinary.public_id;
                 }
+                //prueba
                 yield db.query('insert into vendedor set ?', [vendedor_formateado]);
                 if (files[0]) {
                     yield fs_extra_1.default.unlink(files[0].path);
